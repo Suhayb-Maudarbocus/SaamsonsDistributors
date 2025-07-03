@@ -1,0 +1,32 @@
+<h2 class="list-title">Available Products</h2>
+
+<div *ngIf="displayedProducts.length === 0">No products found.</div>
+
+<div class="product-list">
+  <div class="product-row" *ngFor="let product of displayedProducts">
+    <div class="product-info">
+      <span class="product-name">{{ product.name }}</span>
+      <span class="product-price">Rs {{ product.unitPrice | number: '1.0-0' }}</span>
+    </div>
+
+    <div class="action-section">
+      <input
+        type="number"
+        [(ngModel)]="quantities[product.id]"
+        min="1"
+        placeholder="Qty"
+      />
+
+      <button
+        (click)="addToCart(product.id)"
+        [disabled]="true"
+      >
+      <!-- buttonLoading[product.id] -->
+        <i class="fas fa-cart-plus"></i>
+        {{ buttonLoading[product.id] ? 'Adding...' : 'Add to Cart' }}
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="loadingMore" class="loading">Loading more products...</div>
+</div>

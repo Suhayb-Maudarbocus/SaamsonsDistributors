@@ -10,7 +10,17 @@
   width: fit-content;
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
+
+@media (max-width: 768px) {
+  position: relative;
+  width: 100%;
+  height: auto;
+  border-radius: 0;
+  display: flex;
+  justify-content: space-around;
 }
+}
+
 
 .sidebar h2 {
   margin-top: 0;
@@ -37,7 +47,7 @@
 
 .sidebar a.active {
   font-weight: bold;
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 .break{
@@ -46,4 +56,40 @@
 
 .sidebar a i {
   margin-right: 8px;
+}
+
+a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.1rem;
+  transition: color 0.3s ease;
+
+  &.active {
+    color: #ff5e9c; // 🌸 fancy pink
+    font-weight: 600;
+    text-decoration: underline;
+  }
+
+  &:hover {
+    color: #ff82b2; // lighter pink on hover
+  }
+}
+
+li a.active {
+  color: #e74c3c !important;
+}
+
+li {
+  position: relative;
+
+  a.active::before {
+    content: '';
+    position: absolute;
+    left: -12px;
+    top: 8px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #ff4f4f;
+  }
 }

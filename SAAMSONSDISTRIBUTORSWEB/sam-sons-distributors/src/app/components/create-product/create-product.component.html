@@ -1,1 +1,25 @@
-<p>create-product works!</p>
+<h2>Create New Product</h2>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="form">
+  <div class="form-group">
+    <label for="name">Product Name</label>
+    <input id="name" type="text" formControlName="name" placeholder="e.g. Angle Valve" />
+    <small *ngIf="form.get('name')?.invalid && form.get('name')?.touched">
+      Name is required
+    </small>
+  </div>
+
+  <div class="form-group">
+    <label for="unitPrice">Price</label>
+    <input id="unitPrice" type="number" formControlName="unitPrice" placeholder="e.g. 29.99" />
+    <small *ngIf="form.get('unitPrice')?.invalid && form.get('unitPrice')?.touched">
+      Must be greater than 0
+    </small>
+  </div>
+
+  <button type="submit" [disabled]="form.invalid || isLoading">
+    {{ isLoading ? 'Creating...' : 'Create Product' }}
+  </button>
+
+  <div class="spinner" *ngIf="isLoading"></div>
+</form>

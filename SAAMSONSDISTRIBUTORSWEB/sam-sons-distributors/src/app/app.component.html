@@ -1,6 +1,14 @@
-<div style="display: flex;">
+<div class="app-container">
   <app-sidebar></app-sidebar>
-  <div style="margin-left: auto; padding: 20px; width: 100%;">
-    <router-outlet></router-outlet>
+
+  <div class="main-content">
+    <div class="card">
+      <router-outlet></router-outlet>
+    </div>
   </div>
 </div>
+<ng-container *ngIf="loadingService.loading$ | async as isLoading">
+  <div class="global-spinner" *ngIf="isLoading">
+    <div class="spinner"></div>
+  </div>
+</ng-container>
