@@ -15,6 +15,8 @@ export class ProductListComponent implements OnInit {
   displayedProducts: Product[] = [];
   loadingMore = false;
   batchSize = 50;
+  searchTerm: string = '';
+  private searchTimeout: any;
 
   quantities: { [productId: number]: number } = {};
   buttonLoading: { [productId: number]: boolean } = {};
@@ -45,19 +47,28 @@ export class ProductListComponent implements OnInit {
     }, 1000);
   }
 
-  @HostListener('window:scroll', [])
-  onScroll(): void {
-    if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight - 200 && !this.loadingMore) {
-      this.loadMoreProducts();
-    }
+  public loadMoreProducts(): void {
+    this.loadingMore = true;
+    this.batchSize += 50;
+    this.productService
+      .getBatch(this.displayedProducts.length, this.batchSize)
+      .subscribe({
+        next: (data) => {
+          this.displayedProducts = [...this.displayedProducts, ...data];
+          this.loadingMore = false;
+        },
+        error: () => {
+          this.loadingMore = false;
+        }
+      });
   }
 
-  private loadMoreProducts(): void {
-    this.loadingMore = true;
-    setTimeout(() => {
-      const nextBatch = this.allProducts.slice(this.displayedProducts.length, this.displayedProducts.length + this.batchSize);
-      this.displayedProducts = [...this.displayedProducts, ...nextBatch];
-      this.loadingMore = false;
-    }, 500);
-  }
+  onSearchChange(): void {
+  clearTimeout(this.searchTimeout);
+
+  this.searchTimeout = setTimeout(() => {
+    this.displayedProducts = [];
+    this.loadMoreProducts();
+  }, 400);
+}
 }

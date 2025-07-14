@@ -3,10 +3,19 @@
 <div *ngIf="displayedProducts.length === 0">No products found.</div>
 
 <div class="product-list">
+  <div class="search-bar">
+  <input
+    type="text"
+    placeholder="Search by name or code..."
+    [(ngModel)]="searchTerm"
+    (ngModelChange)="onSearchChange()"
+  />
+</div>
   <div class="product-row" *ngFor="let product of displayedProducts">
     <div class="product-info">
       <span class="product-name">{{ product.name }}</span>
-      <span class="product-price">Rs {{ product.unitPrice | number: '1.0-0' }}</span>
+      <span class="product-price">Rs {{ product.sellingPrice | number: '1.2-2' }}</span>
+      <span class="product-qty">Stock: <span style="color:green; font-size:1.1rem;">{{ product.quantity }}</span></span>
     </div>
 
     <div class="action-section">
@@ -28,5 +37,13 @@
     </div>
   </div>
 
-  <div *ngIf="loadingMore" class="loading">Loading more products...</div>
+  <div class="load-more-section" *ngIf="!loadingMore">
+  <button (click)="loadMoreProducts()" class="load-more-button">
+    Load More
+  </button>
+</div>
+
+<div *ngIf="loadingMore" class="loading">
+  Loading...
+</div>
 </div>

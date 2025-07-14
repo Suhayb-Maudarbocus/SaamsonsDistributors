@@ -16,10 +16,12 @@ namespace SAAMSONSDISTRIBUTORS.Models
 
         [Column(TypeName = "nvarchar(255)")]
         public string? Url { get; set; }
+        
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal? UnitPrice { get; set; }
 
-        public float? UnitPrice { get; set; }
-
-        public float? SellingPrice { get; set; }
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal? SellingPrice { get; set; }
 
         [Column(TypeName = "nvarchar(100)")]
         public string? SupplierName { get; set; }

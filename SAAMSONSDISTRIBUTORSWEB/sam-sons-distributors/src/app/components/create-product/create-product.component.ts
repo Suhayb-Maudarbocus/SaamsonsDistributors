@@ -23,7 +23,9 @@ export class CreateProductComponent {
   ) {
     this.form = this.fb.group({
     name: ['', Validators.required],
-    unitPrice: [0, [Validators.required, Validators.min(0.01)]]
+    unitPrice: [0, [Validators.required, Validators.min(0.01)]],
+    sellingPrice: [0, [Validators.required, Validators.min(0.01)]],
+    quantity: [0, [Validators.required, Validators.min(1)]]
   });
   }
   

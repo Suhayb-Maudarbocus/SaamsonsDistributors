@@ -19,6 +19,9 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  max-height: 70vh;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .product-row {
@@ -48,7 +51,7 @@
     }
 
     .product-price {
-      font-size: 0.95rem;
+      font-size: 1.1rem;
       color: #0074d9;
       margin-top: 4px;
     }
@@ -102,4 +105,27 @@
   margin-top: 30px;
   color: #777;
   font-size: 0.9rem;
+}
+
+.product-qty {
+  font-size: 1.1rem;
+  color: #888;
+  margin-top: 2px;
+}
+
+.search-bar {
+  margin-bottom: 16px;
+
+  input {
+    width: 95%;
+    padding: 10px 16px;
+    font-size: 1rem;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+
+    &:focus {
+      border-color: #0074d9;
+      outline: none;
+    }
+  }
 }
