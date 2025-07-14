@@ -26,8 +26,12 @@ export class ProductService {
     return this.http.get<Product[]>(this.apiUrl);
   }
 
-  getBatch(skip: number, take: number): Observable<Product[]> {
-  return this.http.get<Product[]>(`${this.apiUrl}?skip=${skip}&take=${take}`);
+  getBatch(skip: number, take: number, search: string = ''): Observable<Product[]> {
+    const encodedSearch = encodeURIComponent(search.trim());
+    const searchParam = search.trim() ? `&search=${encodedSearch}` : '';
+    return this.http.get<Product[]>(
+      `${this.apiUrl}?skip=${skip}&take=${take}${searchParam}`
+    );
 }
 
   getById(id: number): Observable<Product> {

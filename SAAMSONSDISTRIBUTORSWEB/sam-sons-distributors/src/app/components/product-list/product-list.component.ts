@@ -51,7 +51,7 @@ export class ProductListComponent implements OnInit {
     this.loadingMore = true;
     this.batchSize += 50;
     this.productService
-      .getBatch(this.displayedProducts.length, this.batchSize)
+      .getBatch(this.displayedProducts.length, this.batchSize, this.searchTerm)
       .subscribe({
         next: (data) => {
           this.displayedProducts = [...this.displayedProducts, ...data];

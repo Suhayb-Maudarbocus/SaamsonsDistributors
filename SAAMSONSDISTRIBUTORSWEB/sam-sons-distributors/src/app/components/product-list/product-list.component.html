@@ -1,6 +1,6 @@
 <h2 class="list-title">Available Products</h2>
 
-<div *ngIf="displayedProducts.length === 0">No products found.</div>
+<div *ngIf="displayedProducts.length === 0 && !this.loadingMore">No products found.</div>
 
 <div class="product-list">
   <div class="search-bar">
@@ -11,39 +11,40 @@
     (ngModelChange)="onSearchChange()"
   />
 </div>
-  <div class="product-row" *ngFor="let product of displayedProducts">
-    <div class="product-info">
-      <span class="product-name">{{ product.name }}</span>
-      <span class="product-price">Rs {{ product.sellingPrice | number: '1.2-2' }}</span>
-      <span class="product-qty">Stock: <span style="color:green; font-size:1.1rem;">{{ product.quantity }}</span></span>
-    </div>
+  <div class="product-list-scroll" *ngIf="displayedProducts.length > 0">
+    <div class="product-row" *ngFor="let product of displayedProducts">
+      <div class="product-info">
+        <span class="product-name">{{ product.name }}</span>
+        <span class="product-price">Rs {{ product.sellingPrice | number: '1.2-2' }}</span>
+        <span class="product-qty">Stock: <span style="color:green; font-size:1.1rem;">{{ product.quantity }}</span></span>
+      </div>
 
-    <div class="action-section">
-      <input
-        type="number"
-        [(ngModel)]="quantities[product.id]"
-        min="1"
-        placeholder="Qty"
-      />
+      <div class="action-section">
+        <input
+          type="number"
+          [(ngModel)]="quantities[product.id]"
+          min="1"
+          placeholder="Qty"
+        />
 
-      <button
-        (click)="addToCart(product.id)"
-        [disabled]="true"
-      >
-      <!-- buttonLoading[product.id] -->
-        <i class="fas fa-cart-plus"></i>
-        {{ buttonLoading[product.id] ? 'Adding...' : 'Add to Cart' }}
-      </button>
+        <button
+          (click)="addToCart(product.id)"
+          [disabled]="true"
+        >
+        <!-- buttonLoading[product.id] -->
+          <i class="fas fa-cart-plus"></i>
+          {{ buttonLoading[product.id] ? 'Adding...' : 'Add to Cart' }}
+        </button>
+      </div>
     </div>
   </div>
 
   <div class="load-more-section" *ngIf="!loadingMore">
-  <button (click)="loadMoreProducts()" class="load-more-button">
-    Load More
-  </button>
-</div>
-
-<div *ngIf="loadingMore" class="loading">
-  Loading...
-</div>
+    <button (click)="loadMoreProducts()" class="load-more-button">
+      <ng-container *ngIf="loadingMore; else btnText">
+      <span class="spinner"></span>
+    </ng-container>
+    <ng-template #btnText>Load More</ng-template>
+    </button>
+  </div>
 </div>

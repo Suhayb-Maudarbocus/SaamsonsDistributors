@@ -17,10 +17,22 @@ namespace SAAMSONSDISTRIBUTORS.Controllers
 
         // GET: api/products
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetAll([FromQuery] int skip = 0, [FromQuery] int take = 50)
+        public async Task<ActionResult<IEnumerable<Product>>> GetAll([FromQuery] int skip = 0, [FromQuery] int take = 50, [FromQuery] string search ="")
         {
-            var products = await _context.Products
-                .OrderBy(p => p.Id) 
+
+            var query = _context.Products.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                search = search.Trim().ToLower();
+
+                query = query.Where(p =>
+                    p.Name.ToLower().Contains(search) ||
+                    p.Code.ToLower().Contains(search));
+            }
+
+            var products = await query
+                .OrderBy(p => p.Id)
                 .Skip(skip)
                 .Take(take)
                 .ToListAsync();

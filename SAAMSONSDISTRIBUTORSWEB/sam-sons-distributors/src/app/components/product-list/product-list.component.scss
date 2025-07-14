@@ -16,12 +16,49 @@
 }
 
 .product-list {
+  max-height: 75vh;
+  overflow-y: auto;
+}
+
+/* Wrapper to enable scrolling with sticky search */
+.product-list-wrapper {
+  max-height: 75vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Sticky Search Bar */
+.search-bar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: #fff;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+
+  input {
+    width: 95%;
+    padding: 10px 16px;
+    font-size: 1rem;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+
+    &:focus {
+      border-color: #0074d9;
+      outline: none;
+    }
+  }
+}
+
+.product-list-scroll {
+  padding: 0 16px;
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 16px;
-  max-height: 70vh;
-  overflow-y: auto;
-  overflow-x: hidden;
 }
 
 .product-row {
@@ -100,6 +137,12 @@
   }
 }
 
+.product-qty {
+  font-size: 1.1rem;
+  color: #888;
+  margin-top: 2px;
+}
+
 .loading {
   text-align: center;
   margin-top: 30px;
@@ -107,25 +150,51 @@
   font-size: 0.9rem;
 }
 
-.product-qty {
-  font-size: 1.1rem;
-  color: #888;
-  margin-top: 2px;
+.load-more-section {
+  display: flex;
+  justify-content: center;
+  margin: 24px 0;
 }
 
-.search-bar {
-  margin-bottom: 16px;
+.load-more-button {
+  padding: 12px 28px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 50px;
+  background: linear-gradient(135deg, #ff6a00, #ee0979);
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 
-  input {
-    width: 95%;
-    padding: 10px 16px;
-    font-size: 1rem;
-    border-radius: 12px;
-    border: 1px solid #ccc;
+  &:hover {
+    background: linear-gradient(135deg, #ee0979, #ff6a00);
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  }
 
-    &:focus {
-      border-color: #0074d9;
-      outline: none;
-    }
+  &:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+.spinner {
+  border: 2px solid #fff;
+  border-top: 2px solid transparent;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  animation: spin 0.6s linear infinite;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
 }
