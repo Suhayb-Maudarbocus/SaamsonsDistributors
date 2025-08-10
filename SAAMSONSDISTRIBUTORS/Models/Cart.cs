@@ -17,5 +17,8 @@ namespace SAAMSONSDISTRIBUTORS.Models
         [Required]
         public int Quantity { get; set; }
 
+        [Required, MaxLength(128)]
+        public string UserId { get; set; } = string.Empty;
+
     }
 }
