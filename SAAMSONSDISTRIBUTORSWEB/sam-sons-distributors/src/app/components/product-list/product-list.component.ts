@@ -2,6 +2,8 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProductService, Product } from '../../services/product.service';
 import { FormsModule } from '@angular/forms';
+import { CartService } from '../../services/cart.service';
+import { getUserId } from '../../utils/user';
 
 @Component({
   selector: 'app-product-list',
@@ -21,7 +23,8 @@ export class ProductListComponent implements OnInit {
   quantities: { [productId: number]: number } = {};
   buttonLoading: { [productId: number]: boolean } = {};
 
-  constructor(private productService: ProductService) {}
+  constructor(private productService: ProductService,
+              private cartService: CartService) {}
 
   ngOnInit(): void {
     this.productService.getBatch(this.displayedProducts.length, this.batchSize).subscribe({
@@ -33,20 +36,23 @@ export class ProductListComponent implements OnInit {
     });
   }
 
-  addToCart(productId: number): void {
-    const quantity = this.quantities[productId];
-    if (!quantity || quantity <= 0) return;
+  userId = getUserId();
 
-    this.buttonLoading[productId] = true;
+addToCart(productId: number) {
+  const qty = this.quantities[productId] ?? 1;
+  if (qty <= 0) return;
 
-    setTimeout(() => {
-      // Simulate API call
-      console.log(`Added product ${productId} x${quantity} to cart`);
+  this.buttonLoading[productId] = true;
+  this.cartService.addToCart(this.userId, productId, qty).subscribe({
+    next: () => {
       this.buttonLoading[productId] = false;
-      this.quantities[productId] = 0;
-    }, 1000);
-  }
-
+      this.quantities[productId] = 0; // reset
+    },
+    error: () => {
+      this.buttonLoading[productId] = false;
+    }
+  });
+}
   public loadMoreProducts(): void {
     this.loadingMore = true;
     this.batchSize += 50;

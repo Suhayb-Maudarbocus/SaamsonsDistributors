@@ -29,7 +29,7 @@
 
         <button
           (click)="addToCart(product.id)"
-          [disabled]="true"
+          [disabled]="quantities[product.id] <= 0 || buttonLoading[product.id]"
         >
         <!-- buttonLoading[product.id] -->
           <i class="fas fa-cart-plus"></i>

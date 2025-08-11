@@ -1,1 +1,42 @@
-<p>cart works!</p>
+<h2>Your Cart</h2>
+
+<div *ngIf="loading" class="spinner" aria-label="Loading cart"></div>
+<div *ngIf="!loading && items.length === 0">Your cart is empty.</div>
+
+<div class="cart-list" *ngIf="!loading && items.length > 0">
+  <div class="cart-row" *ngFor="let item of items">
+    <div class="info">
+      <div class="name">{{ item.product?.name }}</div>
+      <div class="code">Code: {{ item.product?.code }}</div>
+      <div class="price">Rs {{ priceOf(item) | number:'1.2-2' }}</div>
+    </div>
+
+    <div class="actions">
+      <input type="number"
+             min="0"
+             [(ngModel)]="item.quantity"
+             (ngModelChange)="onQtyChange(item)"
+             aria-label="Quantity" />
+
+      <button (click)="saveQty(item)" [disabled]="rowLoading[item.id]">
+        {{ rowLoading[item.id] ? 'Saving...' : 'Save' }}
+      </button>
+
+      <button class="danger" (click)="remove(item)" [disabled]="rowLoading[item.id]">
+        {{ rowLoading[item.id] ? 'Removing...' : 'Remove' }}
+      </button>
+    </div>
+
+    <div class="line-total">
+      Total: Rs {{ lineTotal(item) | number:'1.2-2' }}
+    </div>
+  </div>
+
+  <div class="cart-footer">
+    <div class="grand-total">
+      Grand Total: <strong>Rs {{ cartTotal() | number:'1.2-2' }}</strong>
+    </div>
+
+    <button class="clear" (click)="clear()" [disabled]="loading">Clear Cart</button>
+  </div>
+</div>
