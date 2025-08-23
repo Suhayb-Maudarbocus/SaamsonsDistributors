@@ -1,9 +1,10 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ProductService, Product } from '../../services/product.service';
+import { ProductService } from '../../services/product.service';
 import { FormsModule } from '@angular/forms';
 import { CartService } from '../../services/cart.service';
 import { getUserId } from '../../utils/user';
+import { Product } from '../../models/product';
 
 @Component({
   selector: 'app-product-list',

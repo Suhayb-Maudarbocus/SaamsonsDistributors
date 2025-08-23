@@ -1,10 +1,10 @@
-﻿// Cart.cs
+﻿// Delivery.cs
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SAAMSONSDISTRIBUTORS.Models
 {
-    public class Cart
+    public class Delivery
     {
         [Key] 
         public int Id { get; set; }
@@ -13,20 +13,22 @@ namespace SAAMSONSDISTRIBUTORS.Models
         public int ProductId { get; set; }
         public Product? Product { get; set; }
 
+        [Required] 
+        public int ClientId { get; set; }
+
         [Required, MaxLength(128)]
         public string UserId { get; set; } = string.Empty;
 
-        [Required] 
-        public int ClientId { get; set; } // assume Client exists
+        [MaxLength(50)]
+        public string InvoiceNumber { get; set; } = string.Empty;
 
         [Required]
-        public CartStatus Status { get; set; } = CartStatus.In_Progress;
+        public CartStatus Status { get; set; } = CartStatus.Pending; // Pending, Delivery, In Progress
 
-        [Required] 
-        public int Quantity { get; set; }
+        [Required] public int Quantity { get; set; }
 
         [Column(TypeName = "decimal(18,2)")]
-        public decimal UnitPriceAtTime { get; set; }  // snapshot
+        public decimal UnitPriceAtTime { get; set; }
 
         [Column(TypeName = "decimal(18,2)")]
         public decimal DiscountPerProduct { get; set; } = 0m;
@@ -38,17 +40,7 @@ namespace SAAMSONSDISTRIBUTORS.Models
         public decimal TotalDiscount { get; set; } = 0m;
 
         [Column(TypeName = "decimal(18,2)")]
-        public decimal TotalPrice
-        {
-            get
-            {
-                return Product?.SellingPrice.HasValue == true ?
-                    Product.SellingPrice.Value * Quantity : 0;
-            }
-        }
-
-        [MaxLength(50)]
-        public string? InvoiceNumber { get; set; }
+        public decimal Total { get; set; } = 0m;
 
         public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
     }

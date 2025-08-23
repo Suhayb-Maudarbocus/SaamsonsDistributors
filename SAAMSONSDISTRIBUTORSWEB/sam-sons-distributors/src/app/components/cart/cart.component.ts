@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { CartService, CartItem } from '../../services/cart.service';
+import { CartService } from '../../services/cart.service';
 import { getUserId } from '../../utils/user';
+import { CartItem } from '../../models/cart';
 
 @Component({
   selector: 'app-cart',

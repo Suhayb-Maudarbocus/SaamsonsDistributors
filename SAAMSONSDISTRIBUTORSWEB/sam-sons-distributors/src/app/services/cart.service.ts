@@ -2,23 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../constants'; // or environments/environment
-
-export interface CartItem {
-  id: number;
-  productId: number;
-  quantity: number;
-  userId: string;
-  product?: {
-    id: number;
-    name?: string;
-    code?: string;
-    url?: string;
-    unitPrice?: number;
-    sellingPrice?: number;
-    supplierName?: string;
-    quantity?: number; // stock
-  };
-}
+import { CartItem } from '../models/cart';
 
 @Injectable({ providedIn: 'root' })
 export class CartService {
