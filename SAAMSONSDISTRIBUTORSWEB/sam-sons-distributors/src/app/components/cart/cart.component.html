@@ -12,11 +12,13 @@
     </div>
 
     <div class="actions">
-      <input type="number"
-             min="0"
-             [(ngModel)]="item.quantity"
-             (ngModelChange)="onQtyChange(item)"
-             aria-label="Quantity" />
+      <input
+        type="number"
+        min="0"
+        [(ngModel)]="item.quantity"
+        (ngModelChange)="onQtyChange(item)"
+        aria-label="Quantity"
+      />
 
       <button (click)="saveQty(item)" [disabled]="rowLoading[item.id]">
         {{ rowLoading[item.id] ? 'Saving...' : 'Save' }}
@@ -37,6 +39,34 @@
       Grand Total: <strong>Rs {{ cartTotal() | number:'1.2-2' }}</strong>
     </div>
 
-    <button class="clear" (click)="clear()" [disabled]="loading">Clear Cart</button>
+    <!-- ✅ Checkout controls -->
+    <div class="checkout-controls">
+      <input
+        type="number"
+        min="1"
+        [(ngModel)]="clientId"
+        placeholder="Client ID"
+        aria-label="Client ID"
+      />
+
+      <input
+        type="text"
+        [(ngModel)]="invoiceNumber"
+        placeholder="Invoice (optional)"
+        aria-label="Invoice number"
+      />
+
+      <button
+        class="checkout"
+        (click)="checkout()"
+        [disabled]="checkoutLoading || !clientId || items.length === 0"
+      >
+        {{ checkoutLoading ? 'Checking out...' : 'Checkout' }}
+      </button>
+    </div>
+
+    <button class="clear" (click)="clear()" [disabled]="loading || checkoutLoading">
+      Clear Cart
+    </button>
   </div>
 </div>

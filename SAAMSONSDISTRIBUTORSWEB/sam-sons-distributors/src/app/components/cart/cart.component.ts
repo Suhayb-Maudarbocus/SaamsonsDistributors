@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { CartService } from '../../services/cart.service';
 import { getUserId } from '../../utils/user';
 import { CartItem } from '../../models/cart';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-cart',
@@ -17,6 +18,10 @@ export class CartComponent implements OnInit {
   items: CartItem[] = [];
   loading = false;
   rowLoading: Record<number, boolean> = {}; // cartId -> loading
+
+  checkoutLoading = false;
+  clientId: number | null = null;         // choose how you set this (from UI or context)
+  invoiceNumber: string = '';
 
   ngOnInit(): void {
     this.loadCart();
@@ -67,6 +72,39 @@ export class CartComponent implements OnInit {
       error: () => { this.rowLoading[item.id] = false; }
     });
   }
+
+  // add method
+checkout(): void {
+  if (!this.clientId || this.clientId <= 0) {
+    // basic guard—replace with your toast
+    alert('Please select a valid client.');
+    return;
+  }
+  if (!this.items.length) {
+    alert('Your cart is empty.');
+    return;
+  }
+
+  this.checkoutLoading = true;
+  this.cartService.checkout(this.userId, this.clientId, this.invoiceNumber || undefined)
+    .subscribe({
+      next: (res) => {
+        this.checkoutLoading = false;
+        // clear local cart view
+        this.items = [];
+        // optional success UI (SweetAlert etc.)
+        Swal.fire({ icon: 'success', title: 'Checked out', text: `Invoice: ${res.invoiceNumber}` })
+        alert(`Checkout successful. Invoice: ${res.invoiceNumber}`);
+        // TODO: navigate to deliveries page if you have one
+        // this.router.navigate(['/deliveries'], { queryParams: { invoice: res.invoiceNumber }});
+      },
+      error: (err) => {
+        this.checkoutLoading = false;
+        console.error(err);
+        alert(err?.error?.message ?? 'Checkout failed.');
+      }
+    });
+}
 
   clear(): void {
     this.loading = true;

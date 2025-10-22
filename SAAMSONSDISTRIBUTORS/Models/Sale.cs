@@ -32,6 +32,9 @@ namespace SAAMSONSDISTRIBUTORS.Models
         public decimal UnitPriceAtTime { get; set; }
 
         [Column(TypeName = "decimal(18,2)")]
+        public decimal SellingPriceAtTime { get; set; }
+
+        [Column(TypeName = "decimal(18,2)")]
         public decimal DiscountPerProduct { get; set; } = 0m;
 
         [Column(TypeName = "decimal(5,2)")]

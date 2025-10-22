@@ -29,4 +29,11 @@ export class CartService {
   clear(userId: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}?userId=${encodeURIComponent(userId)}`);
   }
+
+  checkout(userId: string, clientId: number, invoiceNumber?: string) {
+  return this.http.post<{ message: string; invoiceNumber: string }>(
+    `${this.apiUrl}/checkout`,
+    { userId, clientId, invoiceNumber }
+  );
+}
 }

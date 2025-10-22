@@ -57,7 +57,10 @@ namespace SAAMSONSDISTRIBUTORS.Controllers
             {
                 UserId = request.UserId,
                 ProductId = request.ProductId,
-                Quantity = request.Quantity
+                Quantity = request.Quantity,
+                UnitPriceAtTime = (decimal)product.UnitPrice,
+                SellingPriceAtTime = (decimal)product.SellingPrice
+
             };
 
             _context.Carts.Add(cart);
@@ -79,7 +82,7 @@ namespace SAAMSONSDISTRIBUTORS.Controllers
 
             var cartLines = await _context.Carts
                 .Include(c => c.Product)                 // <-- ensure Product is loaded & tracked
-                .Where(c => c.UserId == request.UserId && c.ClientId == request.ClientId)
+                .Where(c => c.UserId == request.UserId)
                 .OrderBy(c => c.Id)
                 .ToListAsync();
 
@@ -123,6 +126,7 @@ namespace SAAMSONSDISTRIBUTORS.Controllers
                         Status = CartStatus.In_Progress,
                         Quantity = c.Quantity,
                         UnitPriceAtTime = c.UnitPriceAtTime,
+                        SellingPriceAtTime = c.SellingPriceAtTime,
                         DiscountPerProduct = c.DiscountPerProduct,
                         PercentageDiscount = c.PercentageDiscount,
                         TotalDiscount = c.TotalDiscount,

@@ -26,8 +26,9 @@ h2 { margin-bottom: 16px; color: #003b4f; }
     }
     button {
       padding: 8px 12px; border: 0; border-radius: 8px; cursor: pointer;
-      background: #0074d9; color: #fff; transition: background .2s;
+      background: #0074d9; color: #fff; transition: background .2s, opacity .2s;
       &:hover { background: #005fa3; }
+      &:disabled { opacity: .6; cursor: not-allowed; }
       &.danger { background: #e74c3c; &:hover { background: #c0392b; } }
     }
   }
@@ -39,12 +40,43 @@ h2 { margin-bottom: 16px; color: #003b4f; }
 
 .cart-footer {
   display: flex; justify-content: space-between; align-items: center;
+  gap: 16px;
   padding: 12px 0; margin-top: 8px;
+  flex-wrap: wrap; /* responsive wrap */
+
+  .grand-total {
+    font-size: 1rem;
+    strong { font-size: 1.05rem; }
+  }
+
+  /* ✅ New: Checkout controls */
+  .checkout-controls {
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+
+    input {
+      padding: 8px 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      min-width: 140px;
+      font-size: .95rem;
+
+      &:focus { outline: none; border-color: #0074d9; box-shadow: 0 0 0 2px rgba(0,116,217,.1); }
+    }
+
+    .checkout {
+      background: linear-gradient(135deg, #00c853, #00bfa5);
+      color: #fff; border: 0; padding: 10px 16px; border-radius: 10px;
+      cursor: pointer; transition: transform .2s, box-shadow .2s, opacity .2s;
+      &:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(0,0,0,.12); }
+      &:disabled { opacity: .6; cursor: not-allowed; transform: none; box-shadow: none; }
+    }
+  }
 
   .clear {
     background: #ff4d4d; color: #fff; border: 0; padding: 10px 16px;
-    border-radius: 10px; cursor: pointer; transition: background .2s;
+    border-radius: 10px; cursor: pointer; transition: background .2s, opacity .2s;
     &:hover { background: #e60000; }
+    &:disabled { opacity: .6; cursor: not-allowed; }
   }
 }
 
@@ -55,3 +87,15 @@ h2 { margin-bottom: 16px; color: #003b4f; }
   animation: spin .8s linear infinite;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
+
+/* Small screens tweaks */
+@media (max-width: 768px) {
+  .cart-row {
+    grid-template-columns: 1fr; /* stack */
+  }
+  .cart-footer {
+    flex-direction: column; align-items: stretch;
+    .checkout-controls { justify-content: space-between; }
+    .clear { align-self: flex-end; }
+  }
+}
