@@ -30,7 +30,7 @@ namespace SAAMSONSDISTRIBUTORS.Controllers
         }
 
         // GET: api/cart?userId=abc&clientId=123
-        [HttpGet]
+        [HttpGet("print")]
         public async Task<ActionResult<IEnumerable<Cart>>> GetCart([FromQuery] string userId, [FromQuery] int? clientId)
         {
             if (string.IsNullOrWhiteSpace(userId))

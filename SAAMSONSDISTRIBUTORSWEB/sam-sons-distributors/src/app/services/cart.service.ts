@@ -15,7 +15,7 @@ export class CartService {
   }
   getCartForClient(userId: string, clientId: number) {
     return this.http.get<CartItem[]>(
-      `${this.apiUrl}?userId=${encodeURIComponent(userId)}&clientId=${clientId}`
+      `${this.apiUrl}/print?userId=${encodeURIComponent(userId)}&clientId=${clientId}`
     );
   }
 
