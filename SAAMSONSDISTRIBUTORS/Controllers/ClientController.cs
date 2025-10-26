@@ -25,7 +25,7 @@ namespace SAAMSONSDISTRIBUTORS.Controllers
             if (activeOnly)
                 query = query.Where(c => c.IsActive);
 
-            if (!string.IsNullOrWhiteSpace(search))
+            if (search != null)
             {
                 var s = search.Trim().ToLower();
                 query = query.Where(c =>

@@ -1,0 +1,95 @@
+<!-- src/app/components/print-preview/print-preview.component.html -->
+<div class="print-toolbar no-print">
+  <button (click)="printNow()">Print</button>
+</div>
+
+<div class="invoice">
+  <!-- Header -->
+  <div class="header">
+    <div class="brand">
+      <img *ngIf="company.logoUrl" [src]="company.logoUrl" alt="Logo" class="img" />
+      <div class="company">
+        <h1>{{ company.name }}</h1>
+        <div class="meta">
+          <div>{{ company.address }}</div>
+          <div>BRN: {{ company.brn }}</div>
+          <div>VAT: {{ company.vat }}</div>
+          <div>Phone: {{ company.phone }}</div>
+          <div>Email: {{ company.email }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="doc">
+      <div class="title">PRO-FORMA INVOICE</div>
+      <div class="field"><strong>Invoice #:</strong> {{ invoiceNumber || '—' }}</div>
+      <div class="field"><strong>Date:</strong> {{ (items[0]?.createdDate | date:'mediumDate') || (today | date:'mediumDate') }}</div>
+    </div>
+  </div>
+
+  <!-- Bill To -->
+  <div class="billto">
+    <div class="box">
+      <div class="label">Bill To <span class="name mr-3">{{ client?.name || '—' }}</span> </div>
+      <div class="value">
+        <div *ngIf="client?.address" style="font-size:0.7rem;">{{ client?.address }}</div>
+        <div *ngIf="client?.brn"><strong>BRN:</strong> {{ client?.brn }}</div>
+        <div *ngIf="client?.vatRegistrationNumber"><strong>VAT:</strong> {{ client?.vatRegistrationNumber }}</div>
+      </div>
+    </div>
+
+    <div class="box">
+      <div class="label">Discount Applied</div>
+      <div class="value">Rs {{ totalDiscount | number:'1.2-2' }}</div>
+    </div>
+  </div>
+
+  <!-- Items -->
+  <table class="items">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Item</th>
+        <th class="right">Qty</th>
+        <th class="right">Price (excl. VAT)</th>
+        <th class="right">Discount</th>
+        <th class="right">Line Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let i of items; let idx = index">
+        <td>{{ idx + 1 }}</td>
+        <td>{{ i.product?.name || ('Product #' + i.productId) }}</td>
+        <td class="right">{{ i.quantity }}</td>
+        <td class="right">Rs {{ (priceOf(i) || 0) | number:'1.2-2' }}</td>
+        <td class="right">Rs {{ (i.totalDiscount || 0) | number:'1.2-2' }}</td>
+        <td class="right">
+           Rs {{ (i.total != null
+          ? i.total
+          : (priceOf(i) * (i.quantity || 0) - (i.totalDiscount || 0))
+        ) | number:'1.2-2' }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Totals -->
+  <div class="totals">
+    <div class="row">
+      <div class="label">Sub Total</div>
+      <div class="value">Rs {{ subtotal | number:'1.2-2' }}</div>
+    </div>
+    <div class="row">
+      <div class="label">Discount</div>
+      <div class="value">Rs {{ totalDiscount | number:'1.2-2' }}</div>
+    </div>
+    <div class="row grand">
+      <div class="label">Total</div>
+      <div class="value">Rs {{ total | number:'1.2-2' }}</div>
+    </div>
+  </div>
+
+  <div class="footer-note">
+    Prices shown are VAT excluded. (Pro-forma — not a tax invoice.)
+  </div>
+</div>

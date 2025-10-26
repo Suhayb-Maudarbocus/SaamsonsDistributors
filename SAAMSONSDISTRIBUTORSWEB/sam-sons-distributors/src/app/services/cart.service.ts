@@ -13,6 +13,11 @@ export class CartService {
   getCart(userId: string): Observable<CartItem[]> {
     return this.http.get<CartItem[]>(`${this.apiUrl}?userId=${encodeURIComponent(userId)}`);
   }
+  getCartForClient(userId: string, clientId: number) {
+    return this.http.get<CartItem[]>(
+      `${this.apiUrl}?userId=${encodeURIComponent(userId)}&clientId=${clientId}`
+    );
+  }
 
   addToCart(userId: string, productId: number, quantity: number): Observable<CartItem> {
     return this.http.post<CartItem>(this.apiUrl, { userId, productId, quantity });

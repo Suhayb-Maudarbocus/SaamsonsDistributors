@@ -29,6 +29,26 @@ namespace SAAMSONSDISTRIBUTORS.Controllers
             return Ok(items);
         }
 
+        // GET: api/cart?userId=abc&clientId=123
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Cart>>> GetCart([FromQuery] string userId, [FromQuery] int? clientId)
+        {
+            if (string.IsNullOrWhiteSpace(userId))
+                return BadRequest("userId is required.");
+
+            var q = _context.Carts
+                .Include(c => c.Product)
+                .Where(c => c.UserId == userId)
+                .AsQueryable();
+
+            if (clientId.HasValue)
+                q = q.Where(c => c.ClientId == clientId);
+
+            var items = await q.OrderBy(c => c.Id).ToListAsync();
+            return Ok(items);
+        }
+
+
         // POST: api/cart
         [HttpPost]
         public async Task<ActionResult<Cart>> AddToCart([FromBody] AddToCartRequest request)

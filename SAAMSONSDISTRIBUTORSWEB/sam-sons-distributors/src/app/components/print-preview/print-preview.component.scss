@@ -1,0 +1,87 @@
+/* Hide things with this class when printing */
+.no-print { @media print { display: none !important; } }
+
+.print-toolbar {
+  display: flex; justify-content: flex-end; margin-bottom: 12px;
+  button {
+    padding: 8px 14px; border: none; border-radius: 8px; cursor: pointer;
+    background: #0074d9; color: #fff;
+  }
+}
+
+.invoice {
+  background: #fff;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.06);
+
+  .header {
+    display: flex; justify-content: space-between; gap: 16px; margin-bottom: 16px;
+    .brand {
+      display: flex; gap: 12px;
+      img { width: 64px; height: 64px; object-fit: contain; }
+      .company {
+        h1 { margin: 0; font-size: 1.4rem; color: #003b4f; }
+        .meta { color: #555; font-size: .92rem; line-height: 1.3; }
+      }
+    }
+    .doc {
+      text-align: right;
+      .title { font-size: 1.2rem; font-weight: 700; margin-bottom: 6px; color: #003b4f; }
+      .field { font-size: .95rem; color: #333; }
+    }
+  }
+
+  .billto {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;
+    .box {
+      background: #f9fbfd; border: 1px solid #e9eef3; border-radius: 10px; padding: 10px 12px;
+      .label { font-weight: 600; margin-bottom: 6px; color: #003b4f; }
+      .value { color: #333; font-size: 0.8rem; .name { font-weight: 600; } }
+    }
+    @media (max-width: 800px) { grid-template-columns: 1fr; }
+  }
+
+  table.items {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0 16px;
+    th, td { padding: 10px 8px; border-bottom: 1px solid #e9eef3; }
+    th { background: #f3f7fb; color: #003b4f; text-align: left; }
+    .right { text-align: right; }
+  }
+
+  .totals {
+    display: grid; gap: 6px; max-width: 360px; margin-left: auto;
+    .row {
+      display: flex; justify-content: space-between; padding: 6px 0;
+      .label { color: #555; }
+      .value { font-weight: 600; color: #333; }
+      &.grand .value { font-size: 1.15rem; color: #003b4f; }
+    }
+  }
+
+  .footer-note {
+    margin-top: 16px; color: #666; font-size: .92rem;
+  }
+}
+
+/* Print page setup */
+@media print {
+  body { background: #fff; }
+  .invoice {
+    box-shadow: none; border-radius: 0; padding: 0;
+  }
+}
+
+.img {
+    width: 200px !important;
+    height: 120px !important;
+}
+
+.name {
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-left: 2rem;
+    color: #333;
+}

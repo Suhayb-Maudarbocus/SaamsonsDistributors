@@ -5,6 +5,10 @@ import { CartService } from '../../services/cart.service';
 import { getUserId } from '../../utils/user';
 import { CartItem } from '../../models/cart';
 import Swal from 'sweetalert2';
+import { Client } from '../../models/client';
+import { ClientsService } from '../../services/client.service';
+import { Router } from '@angular/router';
+import { ClientHandlerService } from '../../services/clientHandler.service';
 
 @Component({
   selector: 'app-cart',
@@ -20,14 +24,35 @@ export class CartComponent implements OnInit {
   rowLoading: Record<number, boolean> = {}; // cartId -> loading
 
   checkoutLoading = false;
-  clientId: number | null = null;         // choose how you set this (from UI or context)
+  clients: Client[] = [];
+  clientsLoading = false;       // choose how you set this (from UI or context)
   invoiceNumber: string = '';
+
+  public get clientId(): number {
+    return this._clientId;
+  }
+
+  public set clientId(value: number) {
+    this._clientId = value;
+    let client = this.clients.find(c => c.id === value);
+    if (client) {
+      this.clientHandlerService.client$.next(client);
+    }
+  }
+
+  private _clientId: number = 0;
+
 
   ngOnInit(): void {
     this.loadCart();
+    this.loadClients();
   }
 
-  constructor(private cartService: CartService) {}
+  constructor(private cartService: CartService,
+              private clientService: ClientsService,
+              private router: Router,
+              private clientHandlerService: ClientHandlerService
+  ) {}
 
   loadCart(): void {
     this.loading = true;
@@ -113,4 +138,32 @@ checkout(): void {
       error: () => { this.loading = false; }
     });
   }
+
+  public openPrintPreview() {
+  if (!this.clientId || this.items.length === 0) return;
+  this.router.navigate(['/print-preview'], {
+    queryParams: {
+      userId: this.userId,
+      clientId: this.clientId,
+      invoiceNumber: this.invoiceNumber || ''
+    }
+  });
+}
+
+  private loadClients(): void {
+  this.clientsLoading = true;
+  // Pull first 100 active clients; adjust as you wish
+  this.clientService.list('', 0, 100, true).subscribe({
+    next: (data) => {
+      // Add initial value
+      this.clients = [{ id: 0, name: 'Select Client', isActive: true }, ...data];
+      // Optional: preselect the first client if none chosen
+      if (!this.clientId && this.clients.length) {
+        this.clientId = this.clients[0].id;
+      }
+      this.clientsLoading = false;
+    },
+    error: () => { this.clientsLoading = false; }
+  });
+}
 }

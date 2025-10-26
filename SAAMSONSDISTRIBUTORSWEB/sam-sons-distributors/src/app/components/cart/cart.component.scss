@@ -49,19 +49,34 @@ h2 { margin-bottom: 16px; color: #003b4f; }
     strong { font-size: 1.05rem; }
   }
 
-  /* ✅ New: Checkout controls */
+  /* Checkout controls */
   .checkout-controls {
-    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    display: flex; 
+    align-items: center; 
+    gap: 10px; 
+    flex-wrap: wrap;
 
-    input {
-      padding: 8px 10px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      min-width: 140px;
-      font-size: .95rem;
+    .client-select, input[type="text"] {
+        appearance: none;
+        background: #fff;
+        border: 1px solid #d7d7d7;
+        border-radius: 12px;
+        padding: 10px 14px;
+        min-width: 220px;
+        font-size: .95rem;
+        line-height: 1.2;
+        transition: border-color .2s ease, box-shadow .2s ease, transform .06s ease;
 
-      &:focus { outline: none; border-color: #0074d9; box-shadow: 0 0 0 2px rgba(0,116,217,.1); }
-    }
+        &:focus {
+          outline: none;
+          border-color: #0074d9;
+          box-shadow: 0 0 0 3px rgba(0,116,217,.12);
+        }
+
+        &:active {
+          transform: translateY(1px);
+        }
+      }
 
     .checkout {
       background: linear-gradient(135deg, #00c853, #00bfa5);
@@ -70,6 +85,23 @@ h2 { margin-bottom: 16px; color: #003b4f; }
       &:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(0,0,0,.12); }
       &:disabled { opacity: .6; cursor: not-allowed; transform: none; box-shadow: none; }
     }
+  }
+
+  .client-select {
+    background-image:
+      linear-gradient(45deg, transparent 50%, #999 50%),
+      linear-gradient(135deg, #999 50%, transparent 50%),
+      linear-gradient(to right, #fff, #fff);
+    background-position:
+      calc(100% - 18px) calc(50% - 3px),
+      calc(100% - 12px) calc(50% - 3px),
+      calc(100% - 2.2rem) 0.4rem;
+    background-repeat: no-repeat;
+    background-size:
+      6px 6px,
+      6px 6px,
+      2rem 70%;
+    padding-right: 2.6rem; /* room for arrow */
   }
 
   .clear {
@@ -98,4 +130,16 @@ h2 { margin-bottom: 16px; color: #003b4f; }
     .checkout-controls { justify-content: space-between; }
     .clear { align-self: flex-end; }
   }
+}
+
+.print {
+  cursor: pointer; 
+  font-size: 1.2rem; 
+  &:hover { color: #005fa3; }
+}
+
+.print-disabled {
+  color: #ccc; 
+  cursor: not-allowed; 
+  pointer-events: none;
 }

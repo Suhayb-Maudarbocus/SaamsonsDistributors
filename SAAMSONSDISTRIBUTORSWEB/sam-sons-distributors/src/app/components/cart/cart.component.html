@@ -4,6 +4,55 @@
 <div *ngIf="!loading && items.length === 0">Your cart is empty.</div>
 
 <div class="cart-list" *ngIf="!loading && items.length > 0">
+  <div class="cart-footer">
+    <div class="grand-total">
+      Grand Total: <strong>Rs {{ cartTotal() | number:'1.2-2' }}</strong>
+    </div>
+
+    <!-- ✅ Checkout controls -->
+    <div class="checkout-controls">
+      <select
+        [(ngModel)]="clientId"
+        [disabled]="clientsLoading"
+        aria-label="Client"
+        class="client-select"
+      >
+        <option *ngFor="let c of clients" [ngValue]="c.id">
+          {{ c.name }} <span *ngIf="c.brn">— {{ c.brn }}</span>
+        </option>
+      </select>
+
+      <input
+        type="text"
+        [(ngModel)]="invoiceNumber"
+        placeholder="Invoice (optional)"
+        aria-label="Invoice number"
+      />
+
+      <button
+        class="checkout"
+        (click)="checkout()"
+        [disabled]="checkoutLoading || !clientId || items.length === 0"
+      >
+        {{ checkoutLoading ? 'Checking out...' : 'Checkout' }}
+      </button>
+
+      <span
+        class="print no-print"
+        [ngClass]="{'print-disabled':!clientId || items.length === 0}"
+        (click)="openPrintPreview()"
+        title="Print pro-forma invoice"
+      >
+        <i class="fa fa-print" aria-hidden="true"></i>
+    </span>
+
+    </div>
+
+    <button class="clear" (click)="clear()" [disabled]="loading || checkoutLoading">
+      Clear Cart
+    </button>
+  </div>
+
   <div class="cart-row" *ngFor="let item of items">
     <div class="info">
       <div class="name">{{ item.product?.name }}</div>
@@ -32,41 +81,5 @@
     <div class="line-total">
       Total: Rs {{ lineTotal(item) | number:'1.2-2' }}
     </div>
-  </div>
-
-  <div class="cart-footer">
-    <div class="grand-total">
-      Grand Total: <strong>Rs {{ cartTotal() | number:'1.2-2' }}</strong>
-    </div>
-
-    <!-- ✅ Checkout controls -->
-    <div class="checkout-controls">
-      <input
-        type="number"
-        min="1"
-        [(ngModel)]="clientId"
-        placeholder="Client ID"
-        aria-label="Client ID"
-      />
-
-      <input
-        type="text"
-        [(ngModel)]="invoiceNumber"
-        placeholder="Invoice (optional)"
-        aria-label="Invoice number"
-      />
-
-      <button
-        class="checkout"
-        (click)="checkout()"
-        [disabled]="checkoutLoading || !clientId || items.length === 0"
-      >
-        {{ checkoutLoading ? 'Checking out...' : 'Checkout' }}
-      </button>
-    </div>
-
-    <button class="clear" (click)="clear()" [disabled]="loading || checkoutLoading">
-      Clear Cart
-    </button>
   </div>
 </div>

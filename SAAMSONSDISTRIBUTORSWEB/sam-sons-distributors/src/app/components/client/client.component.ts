@@ -70,7 +70,6 @@ export class ClientsPageComponent implements OnInit {
   loadMore(): void {
     if (this.loading || !this.hasMore) return;
     this.loading = true;
-
     this.clientsService.list(this.searchTerm, this.skip, this.take, false)
       .subscribe({
         next: (data) => {
