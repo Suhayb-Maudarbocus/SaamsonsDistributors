@@ -10,6 +10,8 @@ namespace SAAMSONSDISTRIBUTORS.Models
         public DbSet<Cart> Carts { get; set; }
         public DbSet<Delivery> Deliveries { get; set; }
         public DbSet<Sale> Sales { get; set; }
+        public DbSet<Client> Clients { get; set; }
+
 
     }
 }

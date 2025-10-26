@@ -1,0 +1,102 @@
+<h2>Clients</h2>
+
+<!-- Search -->
+<div class="search-bar">
+  <input
+    type="text"
+    placeholder="Search by name, BRN, VAT, email..."
+    [value]="searchTerm"
+    (input)="onSearch($any($event.target).value)"
+  />
+</div>
+
+<div class="clients-grid">
+  <!-- List -->
+  <div class="list-pane">
+    <div class="client-row" *ngFor="let c of clients">
+      <div class="info">
+        <div class="name">{{ c.name }}</div>
+        <div class="meta">
+          <span *ngIf="c.brn">BRN: {{ c.brn }} · </span>
+          <span *ngIf="c.vatRegistrationNumber">VAT: {{ c.vatRegistrationNumber }} · </span>
+          <span *ngIf="c.email">{{ c.email }}</span>
+        </div>
+        <div class="sub">
+          <span *ngIf="c.phoneNumber">☎ {{ c.phoneNumber }}</span>
+          <span *ngIf="c.address"> · {{ c.address }}</span>
+        </div>
+        <div class="tag" [class.inactive]="!c.isActive">{{ c.isActive ? 'Active' : 'Inactive' }}</div>
+      </div>
+
+      <div class="actions">
+        <span (click)="edit(c)"><i class="fa fa-pencil" aria-hidden="true"></i></span>
+        <span class="danger" (click)="remove(c)"><i class="fa fa-trash"></i></span>
+      </div>
+    </div>
+
+    <div class="load-more" *ngIf="hasMore && !loading">
+      <button (click)="loadMore()">Load more</button>
+    </div>
+    <div class="loading" *ngIf="loading">Loading...</div>
+  </div>
+
+  <!-- Form -->
+  <div class="form-pane">
+    <div class="card">
+      <h3>{{ editingId == null ? 'Add Client' : 'Edit Client' }}</h3>
+
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <div class="grid">
+          <label>
+            <span>Name *</span>
+            <input formControlName="name" type="text" required />
+          </label>
+
+          <label>
+            <span>BRN</span>
+            <input formControlName="brn" type="text" />
+          </label>
+
+          <label>
+            <span>VAT Reg. No.</span>
+            <input formControlName="vatRegistrationNumber" type="text" />
+          </label>
+
+          <label class="full">
+            <span>Address</span>
+            <input formControlName="address" type="text" />
+          </label>
+
+          <label>
+            <span>Phone</span>
+            <input formControlName="phoneNumber" type="text" />
+          </label>
+
+          <label>
+            <span>Email</span>
+            <input formControlName="email" type="email" />
+          </label>
+
+          <label class="full">
+            <span>Contact Person</span>
+            <input formControlName="contactPerson" type="text" />
+          </label>
+
+          <label class="switch full">
+            <input type="checkbox" formControlName="isActive" />
+            <span>Active</span>
+          </label>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" [disabled]="saving || form.invalid">
+            {{ saving ? 'Saving...' : (editingId == null ? 'Create' : 'Save') }}
+          </button>
+          <button type="button" class="secondary" (click)="cancelEdit()" [disabled]="saving">
+            Clear
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
